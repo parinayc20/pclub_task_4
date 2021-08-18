@@ -91,8 +91,20 @@ export class SearchService {
       }
 
       if (!(term === null || term === '')) {
+
+        term = term.trim()
+
+        const words = escape(term).replace(/\s+/g, ' ').split(" ");
+
+        var match = true;
+        for (let index = 0; index < words.length; index++){
+            const termRegexName = new RegExp(words[index], 'i');
+            if( ! termRegexName.test(elem.n.replace(/\s+/g, ' ')))
+            match = false;
+        }
+
         const termregex = new RegExp(escape(term).replace(/\s+/g, ' '), 'i');
-        return (termregex.test(elem.i) || termregex.test(elem.u) || termregex.test(elem.n.replace(/\s+/g, ' ')));
+        return (termregex.test(elem.i) || termregex.test(elem.u) || match);
       }
 
       return true;
